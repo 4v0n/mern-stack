@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
+import mongoose, { mongo } from "mongoose";
+import workoutRoutes from "./routes/workouts.js";
 
 dotenv.config();
 
@@ -7,16 +9,24 @@ dotenv.config();
 const app = express();
 
 // middleware
+app.use(express.json());
+
 app.use((req, res, next) => {
     console.log(req.path, req.method);
-	next();
+    next();
 });
 
-app.get("/", (req, res) => {
-	res.json({mssg:"welcome to my app"});
-});
+// routes
+app.use("/api/workouts", workoutRoutes);
 
-// port
-app.listen(process.env.PORT, () => {
-	console.log("listening on port ", process.env.PORT);
-});
+// connect to db
+
+mongoose.connect(process.env.MONG_URI)
+    .then(() => {
+        app.listen(process.env.PORT, () => {
+            console.log("Connected to DB, listening on port ", process.env.PORT);
+        });
+    })
+    .then((error) => {
+        console.log(error);
+    });
