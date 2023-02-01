@@ -1,2 +1,2 @@
 # mern stack
-A project for learning full stack development using mern
+A simple project for learning the mern stack follwing The Net Ninja's tutorials
